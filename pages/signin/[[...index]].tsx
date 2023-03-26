@@ -26,7 +26,7 @@ const Index: NextPage<Props> = ({}) => {
 
   return (
     <div className='h-screen bg-gradient-to-tr to-indigo-500 from-teal-500 flex items-center justify-center'>
-      <div className='shrink-0 max-w-[420px] w-full px-3'>
+      <div className='shrink-0 max-w-[430px] w-full px-3'>
         <form className='bg-white rounded-md overflow-hidden shadow-md py-8 px-6'>
           <h2 className='text-center text-2xl font-semibold mb-6 text-fuchsia-800'>
             Sign in
