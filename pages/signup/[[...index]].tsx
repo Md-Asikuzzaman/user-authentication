@@ -40,7 +40,6 @@ const Index: NextPage<Props> = ({}) => {
   };
 
   // Form validation
-
   interface SignUpType {
     username: string;
     email: string;
@@ -64,7 +63,6 @@ const Index: NextPage<Props> = ({}) => {
     },
   });
 
-  console.log(formik.errors);
 
   return (
     <>

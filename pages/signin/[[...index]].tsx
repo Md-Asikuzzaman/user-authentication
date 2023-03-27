@@ -12,6 +12,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Head from 'next/head';
 import { signIn } from 'next-auth/react';
+import { useFormik, FormikProps } from 'formik';
+import { signInValidate } from '@/lib/validation';
 
 interface Props {}
 
@@ -33,6 +35,28 @@ const Index: NextPage<Props> = ({}) => {
     });
   };
 
+  // Form validation
+  interface SignUpType {
+    email: string;
+    password: string;
+  }
+
+  const formik: FormikProps<SignUpType> = useFormik<SignUpType>({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+
+    validate: signInValidate,
+
+    onSubmit: (values) => {
+      console.log(JSON.stringify(values, null, 2));
+      formik.resetForm();
+    },
+  });
+
+  console.log(formik.errors);
+
   return (
     <>
       <Head>
@@ -41,30 +65,39 @@ const Index: NextPage<Props> = ({}) => {
       </Head>
       <div className='h-screen bg-gradient-to-tr to-indigo-500 from-teal-500 flex items-center justify-center'>
         <div className='shrink-0 max-w-[450px] w-full px-3'>
-          <form className='bg-white rounded-md overflow-hidden shadow-md py-8 px-6'>
+          <form
+            className='bg-white rounded-md overflow-hidden shadow-md py-8 px-6'
+            onSubmit={formik.handleSubmit}
+          >
             <h2 className='text-center text-2xl font-semibold mb-6 text-fuchsia-800'>
               Sign in
             </h2>
             <label htmlFor='email'>Email *</label>
-            <div className='relative mb-4 mt-1'>
+            <div className='relative mb-1 mt-1'>
               <MdAlternateEmail className='absolute top-0 left-3 bottom-0 my-auto text-base' />
               <input
                 type='text'
                 placeholder='Email Address'
-                name='email'
                 id='email'
                 className='w-full outline-none bg-slate-100 pl-10 py-2 pr-2 rounded-sm border-slate-100 focus:border-fuchsia-800 border-b-2'
+                {...formik.getFieldProps('email')}
               />
             </div>
+            <p className='text-sm mb-2 text-rose-500'>
+              {formik.errors.email && formik.touched.email
+                ? formik.errors.email
+                : null}
+            </p>
+
             <label htmlFor='password'>Password *</label>
-            <div className='relative mt-1'>
+            <div className='relative mb-1 mt-1'>
               <MdLockOutline className='absolute top-0 left-3 bottom-0 my-auto text-base' />
               <input
                 type={show ? 'text' : 'password'}
                 placeholder='Password'
-                name='password'
                 id='password'
                 className='w-full outline-none bg-slate-100 pl-10 py-2 pr-10 rounded-sm border-slate-100 focus:border-fuchsia-800 border-b-2'
+                {...formik.getFieldProps('password')}
               />
               <div className='absolute top-0 right-3 bottom-0 my-auto text-base  grid place-content-center'>
                 {show ? (
@@ -80,10 +113,19 @@ const Index: NextPage<Props> = ({}) => {
                 )}
               </div>
             </div>
+            <p className='text-sm mb-2 text-rose-500'>
+              {formik.errors.password && formik.touched.password
+                ? formik.errors.password
+                : null}
+            </p>
+
             <p className='mt-4 text-right cursor-pointer text-sm text-slate-600'>
               Forgot password?
             </p>
-            <button className='uppercase bg-fuchsia-800 w-full mt-5 py-1 text-white rounded-3xl'>
+            <button
+              type='submit'
+              className='uppercase bg-fuchsia-800 w-full mt-5 py-1 text-white rounded-3xl'
+            >
               Sign in
             </button>
             <p className='text-center py-4'>Or</p>
