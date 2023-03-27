@@ -8,3 +8,9 @@
     @apply mx-auto px-3;
   }
 }
+
+@layer utilities {
+  .display {
+    min-height: calc(100vh - 72px);
+  }
+}
