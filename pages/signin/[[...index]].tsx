@@ -11,7 +11,7 @@ import { GrFacebookOption } from 'react-icons/gr';
 import Link from 'next/link';
 import { useState } from 'react';
 import Head from 'next/head';
-import { signIn } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import { useFormik, FormikProps } from 'formik';
 import { signInValidate } from '@/lib/validation';
 
@@ -31,6 +31,12 @@ const Index: NextPage<Props> = ({}) => {
   // All sign in handler
   const handleGoogle = (): void => {
     signIn('google', {
+      callbackUrl: '/',
+    });
+  };
+
+  const handleGithub = (): void => {
+    signIn('github', {
       callbackUrl: '/',
     });
   };
@@ -141,7 +147,10 @@ const Index: NextPage<Props> = ({}) => {
                 <GrFacebookOption className='text-xl text-white' />
               </span>
 
-              <span className='h-9 w-9 bg-black rounded-full grid place-content-center cursor-pointer shadow-md'>
+              <span
+                onClick={handleGithub}
+                className='h-9 w-9 bg-black rounded-full grid place-content-center cursor-pointer shadow-md'
+              >
                 <AiOutlineGithub className='text-xl text-white' />
               </span>
 
@@ -166,3 +175,20 @@ const Index: NextPage<Props> = ({}) => {
 };
 
 export default Index;
+
+export const getServerSideProps = async (ctx: any) => {
+  const session = await getSession({ req: ctx.req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+};
