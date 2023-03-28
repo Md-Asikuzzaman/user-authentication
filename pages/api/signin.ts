@@ -1,12 +1,11 @@
 import dbConnect from '@/lib/dbConnect';
 import User from '@/model/signUp';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { hash } from 'bcryptjs';
+import { compare } from 'bcryptjs';
 
 interface Data {}
 
-interface SignUpType {
-  username: string;
+interface SignInType {
   email: string;
   password: string;
 }
@@ -18,10 +17,7 @@ export default async function handler(
   await dbConnect();
 
   if (req.method === 'POST') {
-    const { username, email, password, confirmPassword } = req.body;
-
-    if (!username)
-      return res.status(404).json({ message: 'Username is required' });
+    const { email, password } = req.body;
 
     if (!email) {
       return res.status(404).json({ message: 'Email Address is required' });
@@ -37,26 +33,20 @@ export default async function handler(
       return res.status(404).json({ message: 'Use at most 30 characters' });
     }
 
-    if (!confirmPassword) {
-      return res.status(404).json({ message: 'Confirm password is required' });
-    } else if (password !== confirmPassword) {
-      return res.status(404).json({ message: 'Password not matched' });
-    }
-
     // check existing user
-    const existingUser = await User.findOne<SignUpType>({ email });
+    const existingUser = await User.findOne<SignInType>({ email });
 
-    if (existingUser)
-      return res.status(404).json({ message: 'User already exists' });
+    if (!existingUser)
+      return res.status(404).json({ message: 'User does not exist' });
+
+    // compare password
+    const comPassword = await compare(password, existingUser.password);
+
+    if (!comPassword)
+      return res.status(404).json({ message: 'password not valid' });
 
     try {
-      await User.create<SignUpType>({
-        username,
-        email,
-        password: await hash(password, 12),
-      });
-
-      res.status(201).json({ message: 'User created successfully' });
+      res.status(200).json({ existingUser });
     } catch (error: any) {
       res.status(500).json(error.message);
     }
