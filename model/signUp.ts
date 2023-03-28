@@ -18,15 +18,11 @@ const userSchema = new Schema<SignUpType>({
     lowercase: true,
     unique: true,
     required: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please fill a valid email address',
-    ],
   },
   password: {
     type: String,
     required: true,
-    maxLength: 50,
+    maxLength: 150,
     minlength: 8,
   },
 });
