@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { hash } from 'bcryptjs';
 
 interface Data {}
+
 interface SignUpType {
   username: string;
   email: string;
@@ -44,13 +45,13 @@ export default async function handler(
     }
 
     // check existing user
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne<SignUpType>({ email });
 
     if (existingUser)
       return res.status(404).json({ message: 'User already exists' });
 
     try {
-      const newUser = await User.create({
+      const newUser = await User.create<SignUpType>({
         username,
         email,
         password: await hash(password, 12),
