@@ -14,11 +14,15 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { useFormik, FormikProps } from 'formik';
 import { signUpValidate } from '@/lib/validation';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 interface Props {}
 
 const Index: NextPage<Props> = ({}) => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
@@ -57,12 +61,23 @@ const Index: NextPage<Props> = ({}) => {
 
     validate: signUpValidate,
 
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      try {
+        const res = await axios.post(
+          'http://localhost:3000/api/signup',
+          values
+        );
+
+        if (res.status === 201) {
+          router.replace('/signin');
+        }
+      } catch (error: any) {
+        setError(error?.response.data.message);
+      }
+
       formik.resetForm();
     },
   });
-
 
   return (
     <>
@@ -80,6 +95,12 @@ const Index: NextPage<Props> = ({}) => {
             <h2 className='text-center text-2xl font-semibold mb-5 text-fuchsia-800'>
               Sign Up
             </h2>
+
+            {error && (
+              <p className='text-center bg-rose-400 py-1.5 rounded-sm mb-3 text-white'>
+                {error}
+              </p>
+            )}
 
             <label htmlFor='username'>Username *</label>
             <div className='relative mb-1 mt-1'>
