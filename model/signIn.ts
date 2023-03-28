@@ -1,17 +1,11 @@
 import { Schema, model, models } from 'mongoose';
 
-interface SignUpType {
-  username: string;
+interface SignInType {
   email: string;
   password: string;
 }
 
-const userSchema = new Schema<SignUpType>({
-  username: {
-    type: String,
-    required: true,
-    maxLength: 50,
-  },
+const userSchema = new Schema<SignInType>({
   email: {
     type: String,
     trim: true,
@@ -31,6 +25,6 @@ const userSchema = new Schema<SignUpType>({
   },
 });
 
-const User = models.User || model<SignUpType>('User', userSchema);
+const User = models.User || model<SignInType>('User', userSchema);
 
 export default User;
