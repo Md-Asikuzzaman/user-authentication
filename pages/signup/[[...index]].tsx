@@ -91,7 +91,7 @@ const Index: NextPage<Props> = ({}) => {
       <div className='h-screen bg-gradient-to-tr to-indigo-500 from-teal-500 flex justify-center items-center'>
         <div className='shrink-0 max-w-[450px] w-full px-3'>
           <form
-            className='bg-white rounded-md overflow-hidden shadow-md py-8 px-6'
+            className='bg-white rounded-md overflow-hidden shadow-md py-7 px-6'
             onSubmit={formik.handleSubmit}
           >
             <h2 className='text-center text-2xl font-semibold mb-5 text-fuchsia-800'>
