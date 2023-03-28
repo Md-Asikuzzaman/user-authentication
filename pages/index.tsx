@@ -7,7 +7,7 @@ import { getSession, signOut, useSession } from 'next-auth/react';
 export default function Home() {
   const { data: session } = useSession();
 
-  // console.log(session?.user?.name);
+  console.log(session);
 
   return (
     <>
@@ -26,7 +26,6 @@ export default function Home() {
             <div className='flex items-center gap-20'>
               <div className='flex items-center gap-3'>
                 <Image
-                  // src='/favicon.ico'
                   src={`${session ? session?.user?.image : '/favicon.ico'}`}
                   height='30'
                   width='30'

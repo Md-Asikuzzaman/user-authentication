@@ -14,11 +14,14 @@ import Head from 'next/head';
 import { getSession, signIn } from 'next-auth/react';
 import { useFormik, FormikProps } from 'formik';
 import { signInValidate } from '@/lib/validation';
+import { useRouter } from 'next/router';
 
 interface Props {}
 
 const Index: NextPage<Props> = ({}) => {
+  const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleShowPassword = (): void => {
     setShow(true);
@@ -55,13 +58,25 @@ const Index: NextPage<Props> = ({}) => {
 
     validate: signInValidate,
 
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      const status = await signIn('credentials', {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+        callbackUrl: '/',
+      });
+
+      if (status?.error) {
+        setError(status?.error);
+      }
+
       formik.resetForm();
+
+      if (status?.ok) {
+        router.replace('/');
+      }
     },
   });
-
-  console.log(formik.errors);
 
   return (
     <>
@@ -78,6 +93,13 @@ const Index: NextPage<Props> = ({}) => {
             <h2 className='text-center text-2xl font-semibold mb-6 text-fuchsia-800'>
               Sign in
             </h2>
+
+            {error && (
+              <p className='text-center bg-rose-400 py-1.5 rounded-sm mb-3 text-white'>
+                {error}
+              </p>
+            )}
+
             <label htmlFor='email'>Email *</label>
             <div className='relative mb-1 mt-1'>
               <MdAlternateEmail className='absolute top-0 left-3 bottom-0 my-auto text-base' />
@@ -187,7 +209,6 @@ export const getServerSideProps = async (ctx: any) => {
       },
     };
   }
-
   return {
     props: { session },
   };
