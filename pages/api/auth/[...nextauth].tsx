@@ -44,7 +44,7 @@ export default NextAuth({
           id: result._id,
           name: result.username,
           email: result.email,
-          image: '/favicon.ico',
+          image: '/user.png',
         };
 
         if (user) {

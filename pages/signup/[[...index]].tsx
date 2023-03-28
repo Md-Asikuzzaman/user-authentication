@@ -16,6 +16,8 @@ import { useFormik, FormikProps } from 'formik';
 import { signUpValidate } from '@/lib/validation';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
+import { redirect } from 'next/dist/server/api-utils';
 
 interface Props {}
 
@@ -246,3 +248,20 @@ const Index: NextPage<Props> = ({}) => {
 };
 
 export default Index;
+
+export const getServerSideProps = async (ctx: any) => {
+  const session = await getSession({ req: ctx.req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+};

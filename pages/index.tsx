@@ -27,8 +27,8 @@ export default function Home() {
               <div className='flex items-center gap-3'>
                 <Image
                   src={`${session ? session?.user?.image : '/favicon.ico'}`}
-                  height='30'
-                  width='30'
+                  height='40'
+                  width='40'
                   alt='profile'
                 />
                 <h5 className='text-lg text-white'>
