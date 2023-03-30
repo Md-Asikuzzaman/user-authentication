@@ -1,12 +1,11 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import { FiPower } from 'react-icons/fi';
 import { getSession, signOut, useSession } from 'next-auth/react';
 
 export default function Home() {
   const { data: session } = useSession();
-  
+
   return (
     <>
       <Head>
@@ -36,7 +35,7 @@ export default function Home() {
               <div className='flex items-center gap-5'>
                 <button
                   onClick={() => signOut()}
-                  className='bg-rose-500 py-1 px-4 text-white rounded-full shadow-md flex items-center gap-2'
+                  className='bg-rose-500 py-1 px-4 text-white rounded-full shadow-md flex items-center gap-2 hover:bg-rose-600 focus:bg-rose-600 duration-200'
                 >
                   Sign out <FiPower />
                 </button>

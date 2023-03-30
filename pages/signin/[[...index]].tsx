@@ -159,7 +159,7 @@ const Index: NextPage<Props> = ({}) => {
             </p>
             <button
               type='submit'
-              className='uppercase bg-fuchsia-800 w-full mt-5 py-1 text-white rounded-3xl'
+              className='uppercase bg-fuchsia-600 w-full mt-5 py-1 text-white rounded-3xl duration-200 hover:bg-fuchsia-700 focus:bg-fuchsia-800'
             >
               Sign in
             </button>
