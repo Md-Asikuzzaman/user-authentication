@@ -84,7 +84,7 @@ const Index: NextPage<Props> = ({}) => {
     onSubmit: async (values) => {
       try {
         const res = await axios.post(
-          'http://localhost:3000/api/signup',
+          'https://user-authentication-ten.vercel.app/signup',
           values
         );
 
