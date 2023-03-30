@@ -60,6 +60,7 @@ const Index: NextPage<Props> = ({}) => {
     // signIn('facebook', {
     //   callbackUrl: '/',
     // });
+    console.log('facebook');
   };
 
   // Form validation
