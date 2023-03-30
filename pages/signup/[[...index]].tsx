@@ -2,7 +2,6 @@ import { NextPage } from 'next';
 import {
   AiOutlineUser,
   AiOutlineGithub,
-  AiOutlineTwitter,
   AiOutlineEye,
   AiOutlineEyeInvisible,
 } from 'react-icons/ai';
@@ -16,8 +15,7 @@ import { useFormik, FormikProps } from 'formik';
 import { signUpValidate } from '@/lib/validation';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { getSession } from 'next-auth/react';
-import { redirect } from 'next/dist/server/api-utils';
+import { getSession, signIn } from 'next-auth/react';
 
 interface Props {}
 
@@ -43,6 +41,25 @@ const Index: NextPage<Props> = ({}) => {
 
   const handleConfirmHiddenPassword = (): void => {
     setShowConfirmPassword(false);
+  };
+
+  // All sign in handler
+  const handleGoogle = (): void => {
+    signIn('google', {
+      callbackUrl: '/',
+    });
+  };
+
+  const handleGithub = (): void => {
+    signIn('github', {
+      callbackUrl: '/',
+    });
+  };
+
+  const handleFacebook = (): void => {
+    // signIn('facebook', {
+    //   callbackUrl: '/',
+    // });
   };
 
   // Form validation
@@ -112,10 +129,9 @@ const Index: NextPage<Props> = ({}) => {
                 placeholder='Username'
                 id='username'
                 className='w-full outline-none bg-slate-100 pl-10 py-2 pr-2 rounded-sm border-slate-100 focus:border-fuchsia-800 border-b-2'
-                // name='username'
-                // onChange={formik.handleChange}
-                // value={formik.values.username}
-                {...formik.getFieldProps('username')}
+                name='username'
+                onChange={formik.handleChange}
+                value={formik.values.username}
               />
             </div>
             <p className='text-sm mb-2 text-rose-500'>
@@ -215,20 +231,25 @@ const Index: NextPage<Props> = ({}) => {
             </button>
             <p className='text-center py-4'>Or</p>
             <div className='flex justify-center gap-3'>
-              <span className='h-9 w-9 bg-slate-200 rounded-full grid place-content-center cursor-pointer shadow-md'>
+              <span
+                onClick={() => handleGoogle()}
+                className='h-9 w-9 bg-slate-200 rounded-full grid place-content-center cursor-pointer shadow-md'
+              >
                 <FcGoogle className='text-xl' />
               </span>
 
-              <span className='h-9 w-9 bg-blue-800 rounded-full grid place-content-center cursor-pointer shadow-md'>
+              <span
+                onClick={() => handleFacebook()}
+                className='h-9 w-9 bg-blue-800 rounded-full grid place-content-center cursor-pointer shadow-md'
+              >
                 <GrFacebookOption className='text-xl text-white' />
               </span>
 
-              <span className='h-9 w-9 bg-black rounded-full grid place-content-center cursor-pointer shadow-md'>
+              <span
+                onClick={() => handleGithub()}
+                className='h-9 w-9 bg-black rounded-full grid place-content-center cursor-pointer shadow-md'
+              >
                 <AiOutlineGithub className='text-xl text-white' />
-              </span>
-
-              <span className='h-9 w-9 bg-sky-600 rounded-full grid place-content-center cursor-pointer shadow-md'>
-                <AiOutlineTwitter className='text-xl text-white' />
               </span>
             </div>
             <p className='text-center mt-5 text-slate-600 text-sm'>

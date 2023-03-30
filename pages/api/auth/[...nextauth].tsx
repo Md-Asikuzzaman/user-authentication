@@ -3,8 +3,8 @@ import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import dbConnect from '@/lib/dbConnect';
-import User from '@/model/signIn';
 import { compare } from 'bcryptjs';
+import User from '@/model/User';
 
 export default NextAuth({
   providers: [
@@ -23,13 +23,14 @@ export default NextAuth({
         email: { label: 'email', type: 'text' },
         password: { label: 'password', type: 'text' },
       },
-      async authorize(credentials, request) {
-        await dbConnect().catch((err) => err.message);
+      async authorize(credentials, req) {
+        await dbConnect();
 
         // check user existing
-        const result = await User.findOne({
+        var result = await User.findOne({
           email: credentials?.email,
         });
+
         if (!result) throw new Error('User does not exist');
 
         // compare password
@@ -39,11 +40,10 @@ export default NextAuth({
         );
         if (!checkPassword) throw new Error('Invalid credentials');
 
-        // Add logic here to look up the user from the credentials supplied
         const user = {
-          id: result._id,
-          name: result.username,
-          email: result.email,
+          id: result?._id,
+          name: result?.username,
+          email: result?.email,
           image: '/user.png',
         };
 
@@ -56,5 +56,5 @@ export default NextAuth({
     }),
   ],
 
-  secret: 'mynameisdevasik',
+  secret: 'asik',
 });

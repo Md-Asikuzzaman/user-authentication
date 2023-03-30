@@ -1,7 +1,6 @@
 import { NextPage } from 'next';
 import {
   AiOutlineGithub,
-  AiOutlineTwitter,
   AiOutlineEye,
   AiOutlineEyeInvisible,
 } from 'react-icons/ai';
@@ -42,6 +41,12 @@ const Index: NextPage<Props> = ({}) => {
     signIn('github', {
       callbackUrl: '/',
     });
+  };
+
+  const handleFacebook = (): void => {
+    // signIn('facebook', {
+    //   callbackUrl: '/',
+    // });
   };
 
   // Form validation
@@ -165,7 +170,10 @@ const Index: NextPage<Props> = ({}) => {
                 <FcGoogle className='text-xl' />
               </span>
 
-              <span className='h-9 w-9 bg-blue-800 rounded-full grid place-content-center cursor-pointer shadow-md'>
+              <span
+                onClick={() => handleFacebook()}
+                className='h-9 w-9 bg-blue-800 rounded-full grid place-content-center cursor-pointer shadow-md'
+              >
                 <GrFacebookOption className='text-xl text-white' />
               </span>
 
@@ -174,10 +182,6 @@ const Index: NextPage<Props> = ({}) => {
                 className='h-9 w-9 bg-black rounded-full grid place-content-center cursor-pointer shadow-md'
               >
                 <AiOutlineGithub className='text-xl text-white' />
-              </span>
-
-              <span className='h-9 w-9 bg-sky-600 rounded-full grid place-content-center cursor-pointer shadow-md'>
-                <AiOutlineTwitter className='text-xl text-white' />
               </span>
             </div>
             <p className='text-center mt-10 text-slate-600 text-sm'>
