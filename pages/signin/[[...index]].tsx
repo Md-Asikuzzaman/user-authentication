@@ -44,11 +44,9 @@ const Index: NextPage<Props> = ({}) => {
   };
 
   const handleFacebook = (): void => {
-    // signIn('facebook', {
-    //   callbackUrl: '/',
-    // });
-
-    console.log('facebook');
+    signIn('facebook', {
+      callbackUrl: '/',
+    });
   };
 
   // Form validation
