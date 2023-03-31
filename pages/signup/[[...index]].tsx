@@ -259,7 +259,7 @@ const Index: NextPage<Props> = ({}) => {
                 className='hover:underline text-fuchsia-800 ml-1'
                 href='/signin'
               >
-                Sign in
+                Sign In
               </Link>
             </p>
           </form>
